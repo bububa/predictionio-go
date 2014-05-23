@@ -45,8 +45,8 @@ func (this *Client) parseRequest(req interface{}) (httpRequest *http.Request, er
 				values.Add(k, v)
 			}
 		}
-		httpRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		httpRequest, err = http.NewRequest(POST_METHOD, endPoint, strings.NewReader(values.Encode()))
+		httpRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		return
 	case *GetUserRequest:
 		request := req.(*GetUserRequest)
@@ -126,7 +126,8 @@ func (this *Client) parseRequest(req interface{}) (httpRequest *http.Request, er
 		if !request.T.IsZero() {
 			values.Add("pio_t", request.T.UTC().Format(timeLayout))
 		}
-		httpRequest, err = http.NewRequest(GET_METHOD, endPoint, strings.NewReader(values.Encode()))
+		httpRequest, err = http.NewRequest(POST_METHOD, endPoint, strings.NewReader(values.Encode()))
+		httpRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		return
 	case *GetRecommendItemsRequest:
 		request := req.(*GetRecommendItemsRequest)
