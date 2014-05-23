@@ -22,6 +22,10 @@ type Client struct {
 	GateWay string
 }
 
+func NewClient(gateWay string) *Client {
+	return &Client{GateWay: gateWay}
+}
+
 func (this *Client) parseRequest(req interface{}) (httpRequest *http.Request, err error) {
 	switch req.(type) {
 	case *AddUserRequest:
@@ -88,8 +92,8 @@ func (this *Client) parseRequest(req interface{}) (httpRequest *http.Request, er
 				values.Add(k, v)
 			}
 		}
-		httpRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		httpRequest, err = http.NewRequest(POST_METHOD, endPoint, strings.NewReader(values.Encode()))
+		httpRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		return
 	case *GetItemRequest:
 		request := req.(*GetItemRequest)
@@ -190,6 +194,5 @@ func (this *Client) Command(req interface{}) (res []byte, err error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return body, nil
 }
